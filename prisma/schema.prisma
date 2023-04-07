@@ -9,9 +9,35 @@ generator client {
   binaryTargets = ["native", "linux-arm64-openssl-1.1.x"]
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
-  title     String
-  completed Boolean  @default(false)
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  projects Project[]
+  tasks    Task[]
 }
 
+model Project {
+  id      Int    @id @default(autoincrement())
+  name    String
+  ownerId Int
+  owner   User   @relation(fields: [ownerId], references: [id])
+  tasks   Task[]
+}
+
+model Task {
+  id         Int      @id @default(autoincrement())
+  title      String
+  completed  Boolean  @default(false)
+  projectId  Int
+  project    Project  @relation(fields: [projectId], references: [id])
+  assigneeId Int?
+  assignee   User?    @relation(fields: [assigneeId], references: [id])
+  labels     Label[]
+}
+
+model Label {
+  id    Int    @id @default(autoincrement())
+  name  String
+  tasks Task[]
+}
