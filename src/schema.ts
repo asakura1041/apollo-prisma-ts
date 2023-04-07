@@ -10,7 +10,7 @@ export const typeDefs = gql`
 
   type Project {
     id: ID!
-    name: String!
+    name: String
     owner: User!
     tasks: [Task!]!
   }

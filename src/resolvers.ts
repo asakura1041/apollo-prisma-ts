@@ -9,13 +9,22 @@ export const resolvers: IResolvers = {
       return context.prisma.user.findUnique({ where: { id: parseInt(args.id) } });
     },
     projects: async (_parent, _args, context) => {
-      return context.prisma.project.findMany();
+      return context.prisma.project.findMany({
+        include: {
+          owner: true,
+        },
+      });
     },
     project: async (_parent, args, context) => {
       return context.prisma.project.findUnique({ where: { id: parseInt(args.id) } });
     },
     tasks: async (_parent, _args, context) => {
-      return context.prisma.task.findMany();
+      return context.prisma.task.findMany({
+        include: {
+          project: true,
+          assignee: true,
+        },
+      });
     },
     task: async (_parent, args, context) => {
       return context.prisma.task.findUnique({ where: { id: parseInt(args.id) } });
